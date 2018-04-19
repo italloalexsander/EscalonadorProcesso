@@ -10,7 +10,13 @@
 using namespace std;
 
 /*Funções para serem usadas como terceiro parâmetro do sort do vector
-que são estruturadas para casamento com o _Compare do C++*/
+que são estruturadas para casamento com o _Compare do C++
+
+Nome: Itallo Alexsander da Fonseca
+Matrícula: 11500777
+
+
+*/
 
 
 bool compInicio(Processo a, Processo b){
@@ -18,7 +24,7 @@ bool compInicio(Processo a, Processo b){
 }
 
 bool compPico(Processo a, Processo b){
-    return(a.tPico < b.tPico);
+    return(a.tPico <= b.tPico);
 }
 
 
@@ -40,11 +46,6 @@ vector <Processo> LeArquivo(const char *arq){
     arquivo.close();
     return a;
 }
-/*
-Função que simula o escalonador do tipo First Come First Served
-A mais simples das três, basta ordenar por chegada e somar/subtrair os tempos
-e dividir pela quantidade de processos para obter os valores médios.
-*/
 
 void FCFS(vector <Processo> listaProcesso){
 
@@ -78,57 +79,46 @@ void FCFS(vector <Processo> listaProcesso){
 
 }
 
-void SJF(vector <Processo> listaProcesso){
+void SJF(vector <Processo> listaProcesso)
+{
 
     int tEspera = 0, tResposta = 0, tRetorno = 0, tExec = 0, tInicioMin = 1000000;
     int tamLista = listaProcesso.size();
+    int numProcesso = tamLista;
     float tEsperaM, tRespostaM, tRetornoM;
-    vector <Processo> listaAux;
-    //sort(listaProcesso.begin(), listaProcesso.end(), compPico);
+    vector <Processo> listaPronto;
 
-    for(int i = 0; i < listaProcesso.size(); i++){
-        if(listaProcesso[i].tInicio == 0){
-            listaAux.push_back(listaProcesso[i]);
-            listaProcesso.erase(listaProcesso.begin()+i);
-            i--;
-        }
-    }
-
-    while(listaAux.size() > 0 || listaProcesso.size() > 0){
-        if(listaAux.size() == 0 && listaProcesso.size() > 0){
-                for(int j = 0; j < listaProcesso.size(); j++){
-                    if(listaProcesso[j].tInicio < tInicioMin){
-                        tInicioMin = listaProcesso[j].tInicio;
-                    }
-
-                }
-                if(tInicioMin > tExec)
-                    tExec = tInicioMin;//"Caminha até o próximo tempo de inicio minimo"
-        }
-        for(int i = 0; i < listaProcesso.size(); i++){
-            if(listaProcesso[i].tInicio <= tExec){
-                listaAux.push_back(listaProcesso[i]);
-                listaProcesso.erase(listaProcesso.begin()+i);
-                i--;
+    while(numProcesso != 0)
+    {
+        for(int i = 0; i < listaProcesso.size();i++)
+        {
+            if(listaProcesso[i].tInicio <= tExec)
+            {
+                    listaPronto.push_back(listaProcesso[i]);
+                    listaProcesso.erase(listaProcesso.begin()+i);
+                    i--;
             }
         }
-        sort(listaAux.begin(), listaAux.end(), compPico);
-        Processo a = listaAux[0];
-        listaAux.erase(listaAux.begin());
 
-        tResposta = tResposta + tExec - a.tInicio;
-        tEspera = tEspera + tExec - a.tInicio;
-        tRetorno = tRetorno + tExec + a.tPico - a.tInicio;
-        tExec = tExec + a.tPico;
+        sort(listaPronto.begin(), listaPronto.end(), compPico);
 
+        Processo primeiro = listaPronto[0];
+        numProcesso--;
+        listaPronto.erase(listaPronto.begin());
+
+        tEspera += tExec - primeiro.tInicio;
+        tResposta += tExec - primeiro.tInicio;
+        tExec += primeiro.tPico;
+        tRetorno += tExec - primeiro.tInicio;
     }
 
-    tEsperaM = (float)tEspera/(float)tamLista;
-    tRespostaM = (float)tResposta/(float)tamLista;
-    tRetornoM = (float)tRetorno/(float)tamLista;
+    tRetornoM = (float)tRetorno / (float)tamLista;
+    tRespostaM = (float)tResposta / (float)tamLista;
+    tEsperaM = (float)tEspera / (float)tamLista;
 
     cout << fixed << setprecision(1);//
     cout << "SJF " << tRetornoM << " " << tRespostaM << " " << tEsperaM << endl;
+
 }
 
 void RR(vector <Processo> listaProcesso)
@@ -143,12 +133,15 @@ void RR(vector <Processo> listaProcesso)
 
     while(numProcesso != 0)
     {
-        for (int i = 0; i < listaProcesso.size(); i++){
-            if(listaProcesso[i].tInicio == tExec){
+        for (int i = 0; i < listaProcesso.size(); i++)
+        {
+            if(listaProcesso[i].tInicio == tExec)
+            {
                 listaProntos.push_back(listaProcesso[i]);
                 listaProcesso.erase(listaProcesso.begin()+i);
                 i--;
-            }else if(listaProcesso[i].tInicio < tExec){
+            }else if(listaProcesso[i].tInicio < tExec)
+            {
                 tEspera += tExec - listaProcesso[i].tInicio;
                 listaProntos.push_back(listaProcesso[i]);
                 listaProcesso.erase(listaProcesso.begin()+i);
@@ -185,6 +178,7 @@ void RR(vector <Processo> listaProcesso)
     tRetornoM = (float)tRetorno / (float)tamLista;
     tEsperaM = (float)tEspera / (float)tamLista;
 
+    cout << fixed << setprecision(1);//
     cout << "RR " << tRetornoM << " " << tRespostaM << " " << tEsperaM << endl;
 
 
