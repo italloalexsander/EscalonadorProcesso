@@ -15,6 +15,10 @@ que são estruturadas para casamento com o _Compare do C++
 Nome: Itallo Alexsander da Fonseca
 Matrícula: 11500777
 
+Para compilar, basta abrir o cmd no local onde estão os arquivos
+E inserir: "g++ -o main main.cpp Processo.cpp"
+Para executar, ainda no cmd é só digitar: "main.exe"
+O arquivo.txt pode ser alterado sem a necessidade de recompilar o executavel
 
 */
 
