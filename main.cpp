@@ -56,14 +56,14 @@ void FCFS(vector <Processo> listaProcesso){
     int tEspera = 0, tResposta = 0, tRetorno = 0, tExec = 0;
     int tamLista = listaProcesso.size();
 
-    sort(listaProcesso.begin(), listaProcesso.end(), compInicio);
+    sort(listaProcesso.begin(), listaProcesso.end(), compInicio);//Ordena baseado no tInicio
 
-    while(!listaProcesso.size() == 0){
+    while(!listaProcesso.size() == 0){//Enquanto ainda tem processos para processar
         Processo a = listaProcesso[0];
         listaProcesso.erase(listaProcesso.begin());
 
         if(a.tInicio > tExec){
-            tExec = a.tInicio;
+            tExec = a.tInicio;//Passa o valor do tExec para o próximo tInicio
         }
 
         tEspera += tExec - a.tInicio;
@@ -86,11 +86,11 @@ void FCFS(vector <Processo> listaProcesso){
 void SJF(vector <Processo> listaProcesso)
 {
 
-    int tEspera = 0, tResposta = 0, tRetorno = 0, tExec = 0, tInicioMin = 1000000;
+    int tEspera = 0, tResposta = 0, tRetorno = 0, tExec = 0;
     int tamLista = listaProcesso.size();
     int numProcesso = tamLista;
     float tEsperaM, tRespostaM, tRetornoM;
-    vector <Processo> listaPronto;
+    vector <Processo> listaPronto;//Lista de processos que estão prontos para serem executados
 
     while(numProcesso != 0)
     {
@@ -120,7 +120,7 @@ void SJF(vector <Processo> listaProcesso)
     tRespostaM = (float)tResposta / (float)tamLista;
     tEsperaM = (float)tEspera / (float)tamLista;
 
-    cout << fixed << setprecision(1);//
+    cout << fixed << setprecision(1);
     cout << "SJF " << tRetornoM << " " << tRespostaM << " " << tEsperaM << endl;
 
 }
@@ -152,9 +152,9 @@ void RR(vector <Processo> listaProcesso)
                 i--;
             }
         }
-        if(primeiro.tRestante > 0)
+        if(primeiro.tRestante > 0)//Ainda tem que ser processado
         {
-            listaProntos.push_back(primeiro);
+            listaProntos.push_back(primeiro);//Bota ele no fim da fila de prontos
         }
         primeiro = listaProntos[0];
         listaProntos.erase(listaProntos.begin());
@@ -166,9 +166,10 @@ void RR(vector <Processo> listaProcesso)
 
         tExec += Quantum;
         primeiro.tRestante -= Quantum;
-        tEspera += Quantum * listaProntos.size();
+        tEspera += Quantum * listaProntos.size();//Adiciona os valores de quantum dos processos
+						 //a serem executados
 
-        if(primeiro.tRestante <= 0)
+        if(primeiro.tRestante <= 0)//tRestante era menor que o Quantum
         {
             numProcesso--;
             tExec += primeiro.tRestante;
@@ -182,7 +183,7 @@ void RR(vector <Processo> listaProcesso)
     tRetornoM = (float)tRetorno / (float)tamLista;
     tEsperaM = (float)tEspera / (float)tamLista;
 
-    cout << fixed << setprecision(1);//
+    cout << fixed << setprecision(1);
     cout << "RR " << tRetornoM << " " << tRespostaM << " " << tEsperaM << endl;
 
 
