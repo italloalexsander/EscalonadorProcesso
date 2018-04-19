@@ -11,15 +11,12 @@ using namespace std;
 
 /*Funções para serem usadas como terceiro parâmetro do sort do vector
 que são estruturadas para casamento com o _Compare do C++
-
 Nome: Itallo Alexsander da Fonseca
 Matrícula: 11500777
-
 Para compilar, basta abrir o cmd no local onde estão os arquivos
 E inserir: "g++ -o main main.cpp Processo.cpp"
 Para executar, ainda no cmd é só digitar: "main.exe"
 O arquivo.txt pode ser alterado sem a necessidade de recompilar o executavel
-
 */
 
 
@@ -55,8 +52,6 @@ void FCFS(vector <Processo> listaProcesso){
 
     int tEspera = 0, tResposta = 0, tRetorno = 0, tExec = 0;
     int tamLista = listaProcesso.size();
-
-    sort(listaProcesso.begin(), listaProcesso.end(), compInicio);//Ordena baseado no tInicio
 
     while(!listaProcesso.size() == 0){//Enquanto ainda tem processos para processar
         Processo a = listaProcesso[0];
@@ -198,7 +193,10 @@ int main()
 {
 
     vector <Processo> p, q, r;//Vetores para os três escalonamentos diferentes
-    p = q = r = LeArquivo("arquivo.txt");
+    p = LeArquivo("arquivo.txt");
+    sort(p.begin(), p.end(), compInicio);//Ordena baseado no tInicio
+    q = r = p;
+
     FCFS(p);
     SJF(q);
     RR(r);
