@@ -80,7 +80,7 @@ void FCFS(vector <Processo> listaProcesso){
 
 void SJF(vector <Processo> listaProcesso){
 
-    int tEspera = 0, tResposta = 0, tRetorno = 0, tExec = 0, tInicioMin = 2147483647;
+    int tEspera = 0, tResposta = 0, tRetorno = 0, tExec = 0, tInicioMin = 1000000;
     int tamLista = listaProcesso.size();
     float tEsperaM, tRespostaM, tRetornoM;
     vector <Processo> listaAux;
@@ -131,36 +131,36 @@ void SJF(vector <Processo> listaProcesso){
     cout << "SJF " << tRetornoM << " " << tRespostaM << " " << tEsperaM << endl;
 }
 
-/*void RR(vector <Processo> listaProcesso)
+void RR(vector <Processo> listaProcesso)
 {
     int tResposta = 0, tRetorno = 0, tEspera = 0;
     float tRespostaM = 0, tRetornoM = 0, tEsperaM = 0;
     int tExec = 0;
     int tamLista = listaProcesso.size();
     int numProcesso = tamLista;
-    vector <Processo> listaAux;
+    vector <Processo> listaProntos;
     Processo primeiro(0,0);
 
-    while(tamLista != 0)
+    while(numProcesso != 0)
     {
-        for (int i = 0; i < listaAux.size(); i++){
-            if(listaAux[i].tInicio == tExec){
-                listaProcesso.push_back(listaAux[i]);
-                listaAux.erase(listaAux.begin()+i);
+        for (int i = 0; i < listaProcesso.size(); i++){
+            if(listaProcesso[i].tInicio == tExec){
+                listaProntos.push_back(listaProcesso[i]);
+                listaProcesso.erase(listaProcesso.begin()+i);
                 i--;
-            }else if(listaAux[i].tInicio < tExec){
-                tEspera += tExec - listaAux[i].tInicio;
-                listaProcesso.push_back(listaAux[i]);
-                listaAux.erase(listaAux.begin()+i);
+            }else if(listaProcesso[i].tInicio < tExec){
+                tEspera += tExec - listaProcesso[i].tInicio;
+                listaProntos.push_back(listaProcesso[i]);
+                listaProcesso.erase(listaProcesso.begin()+i);
                 i--;
             }
         }
         if(primeiro.tRestante > 0)
         {
-            listaProcesso.push_back(primeiro);
+            listaProntos.push_back(primeiro);
         }
-        primeiro = listaProcesso[0];
-        listaProcesso.erase(listaProcesso.begin());
+        primeiro = listaProntos[0];
+        listaProntos.erase(listaProntos.begin());
 
         if(primeiro.tRestante == primeiro.tPico)
         {
@@ -169,23 +169,21 @@ void SJF(vector <Processo> listaProcesso){
 
         tExec += Quantum;
         primeiro.tRestante -= Quantum;
-        tEspera += Quantum * listaProcesso.size();
+        tEspera += Quantum * listaProntos.size();
 
         if(primeiro.tRestante <= 0)
         {
-            tamLista--;
+            numProcesso--;
             tExec += primeiro.tRestante;
-            cout << "RR " << tRetorno << " " << tResposta << " " << tEspera << endl;
-            tEspera += (primeiro.tRestante * int(listaProcesso.size()));
+            tEspera += (primeiro.tRestante * int(listaProntos.size()));
             tRetorno += tExec - primeiro.tInicio;
         }
-        //cout << "RR " << tRetorno << " " << tResposta << " " << tEspera << endl;
 
     }
 
-    tRespostaM = (float)tResposta / (float)numProcesso;
-    tRetornoM = (float)tRetorno / (float)numProcesso;
-    tEsperaM = (float)tEspera / (float)numProcesso;
+    tRespostaM = (float)tResposta / (float)tamLista;
+    tRetornoM = (float)tRetorno / (float)tamLista;
+    tEsperaM = (float)tEspera / (float)tamLista;
 
     cout << "RR " << tRetornoM << " " << tRespostaM << " " << tEsperaM << endl;
 
@@ -193,7 +191,7 @@ void SJF(vector <Processo> listaProcesso){
 
 }
 
-*/
+
 
 
 
@@ -204,5 +202,5 @@ int main()
     p = q = r = LeArquivo("arquivo.txt");
     FCFS(p);
     SJF(q);
-    //RR(r);
+    RR(r);
 }
